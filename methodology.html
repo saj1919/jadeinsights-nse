@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology — JADE Insights</title>
+<link rel="stylesheet" href="css/site.css">
+<script src="data.js"></script>
+<script src="js/site.js" defer></script>
+
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="mark">J</span>
+      <span class="logo">JADE</span>
+      <span class="tagline">Insights</span>
+    </a>
+    <div class="nav-links"><a href="index.html" class="">Home</a><a href="leaderboard.html" class="">Leaderboard</a><a href="hall_of_fame.html" class="">Hall of Fame</a><a href="bundles.html" class="">Bundles</a><a href="sectors.html" class="">Sectors</a><a href="trending.html" class="">Trending</a><a href="methodology.html" class="active">Methodology</a></div>
+    <div class="nav-search">
+      <span class="icon">⌕</span>
+      <input id="global-search" type="text" placeholder="Search ticker or company…"
+             autocomplete="off" spellcheck="false" />
+      <span class="kbd">/</span>
+      <div id="search-dropdown"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section class="hero">
+  <h1>How <span class="accent">JADE</span> Works</h1>
+  <p><b>Jadhav Adaptive Daily Equity</b> — a daily competitive rating that measures how every
+  NSE-listed equity has performed against the entire universe of peers, across
+  multiple time horizons, every trading day for years.</p>
+</section>
+
+<section>
+  <h2>The daily competition</h2>
+  <p>Every trading day after market close, every eligible NSE stock enters a
+  competition against the rest of the market. The competition runs in <b>three
+  parallel categories</b> — each measuring a different time horizon — plus a
+  weighted Combined rating.</p>
+  <div class="grid3" style="margin-top:14px;">
+    <div class="stat-card">
+      <div class="lbl">Long Horizon</div>
+      <div class="val" style="color: var(--accent);">Compounder</div>
+      <div class="sub">Measures sustained multi-year performance.
+      Built from 1-year, 2-year, 3-year, and 5-year price progress.
+      The category that identifies durable long-term performers.</div>
+    </div>
+    <div class="stat-card">
+      <div class="lbl">Mid Horizon</div>
+      <div class="val" style="color: var(--accent);">Momentum</div>
+      <div class="sub">Measures medium-term trends.
+      Built from 3-month, 6-month, 9-month, 1-year, and 2-year price moves.
+      Captures stocks in active multi-quarter uptrends.</div>
+    </div>
+    <div class="stat-card">
+      <div class="lbl">Short Horizon</div>
+      <div class="val" style="color: var(--accent);">Breakout</div>
+      <div class="sub">Measures recent short-term strength.
+      Built from 1-week, 2-week, 1-month, and 3-month price action.
+      The category that flags new breakouts and momentum bursts.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How JADE points are earned and lost</h2>
+  <p>Each daily competition pairs every stock against other stocks of similar
+  current rating, and decides the outcome based on each stock's category score
+  for that day. The category score itself is built from how the stock's returns
+  rank against every other stock at each of the timeframes that category uses.</p>
+  <p><b>Stocks that perform well earn JADE points</b> from the stocks they
+  outscore. The size of the gain depends on the gap between the two stocks'
+  pre-competition ratings — beating a much higher-rated stock earns more JADE
+  than beating a similar one. This is exactly how competitive ratings work in
+  sports leagues and ranking systems: <b>upsets matter more than expected
+  wins</b>, which means a previously-unknown stock that breaks out can climb
+  fast, and a high-rated stock that starts losing falls fast.</p>
+  <p>This produces three properties that make JADE useful:</p>
+  <ul>
+    <li><b>It accumulates evidence.</b> A stock's rating reflects years of daily
+    competitions, not just yesterday's price. Brief noise gets smoothed out;
+    durable strength builds up.</li>
+    <li><b>It's relative, not absolute.</b> A JADE of 2000 means "consistently
+    beats the universe", not "is up X% in absolute terms". Bull and bear
+    markets don't inflate or deflate the system.</li>
+    <li><b>It self-corrects.</b> When a stock stops performing, it loses
+    matches and its rating falls. There's no permanent enthronement — the
+    Hall of Fame page tracks how often #1 changes hands.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Trophies and Cups</h2>
+  <p>Daily ratings produce three layers of achievement:</p>
+  <ul>
+    <li><b>Monthly Trophy.</b> In each category, the stock with the most
+    days at #1 during a calendar month earns that month's trophy.</li>
+    <li><b>Yearly Cup.</b> The stock with the most Monthly Trophies in a
+    category during a calendar year wins that category's Yearly Cup.</li>
+    <li><b>World Cup.</b> The rarest prize. A stock wins the World Cup
+    by claiming the Yearly Cup in <i>all three</i> categories (Compounder,
+    Momentum, AND Breakout) in the same calendar year. Equivalent
+    to dominating short, medium, and long horizons simultaneously — the
+    universe-best stock for that year.</li>
+  </ul>
+  <p>Visit the <a href="hall_of_fame.html">Hall of Fame</a> page to see the
+  World Cup standings, the Monthly Trophy roll, and which stock currently sits at #1
+  in each category.</p>
+</section>
+
+<section>
+  <h2>How to read a stock's JADE</h2>
+  <ul>
+    <li><b>Higher = consistently strong.</b> A stock at 2500 has competed
+    well, day after day, for a long time. A stock at 1000 is around the
+    starting line. A stock at 500 has been losing competitions
+    consistently.</li>
+    <li><b>Look at all four ratings together.</b> A stock can be high in
+    Breakout (recent breakout) while low in Compounder (no
+    long track record). The full picture comes from all four.</li>
+    <li><b>Combined JADE is the headline.</b> A 50% / 30% / 20% blend of
+    Compounder / Momentum / Breakout. For most
+    investors, this is the single number to watch.</li>
+    <li><b>Check the rank, not just the number.</b> A 2200 rating in a
+    universe where the top stock is 3300 ranks 50th. Same 2200 in a quieter
+    universe might be #5. The leaderboard tells you the rank explicitly.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Why ~1,252 stocks and not all ~2,419?</h2>
+  <p>NSE lists roughly <b>2,419</b> equity tickers, but most of them are
+  not what you'd actually invest in. JADE deliberately filters the universe
+  down to <b>1,252</b> high-quality, tradeable stocks so the rankings
+  reflect real competitive performance — not data noise.</p>
+  <p>Here is the exact funnel:</p>
+  <table class="t" style="margin-top:10px;">
+    <thead><tr>
+      <th>Filter step</th>
+      <th>Stocks remaining</th>
+      <th>Why this filter?</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Start — all NSE listings</b></td>
+        <td><b>2,419</b></td>
+        <td>Every ticker with data from NSE bhavcopies.</td>
+      </tr>
+      <tr>
+        <td>– ETFs / index funds / commodity ETFs <span class="dim">(206)</span></td>
+        <td><b>2,213</b></td>
+        <td>JADE rates individual equities. Gold/silver ETFs, NIFTYBEES,
+        sector ETFs etc. aren't companies — they're fund products tracking
+        an index or commodity.</td>
+      </tr>
+      <tr>
+        <td>– Suspended or no-price stocks <span class="dim">(670)</span></td>
+        <td><b>1,543</b></td>
+        <td>Tickers without a current closing price are either suspended,
+        delisted, or in some other corporate event state — not tradeable today.</td>
+      </tr>
+      <tr>
+        <td>– Penny stocks below ₹50 <span class="dim">(0)</span></td>
+        <td><b>1,543</b></td>
+        <td>At very low prices, a 50-paisa move looks like a 10% return.
+        This makes returns noisy and the resulting JADE ratings unreliable.
+        ₹50 is the floor where the ratings start to mean something.</td>
+      </tr>
+      <tr>
+        <td>– Illiquid (&lt;₹1Cr daily turnover) <span class="dim">(291)</span></td>
+        <td><b style="color:var(--accent);">1,252</b></td>
+        <td>If a stock's 90-day average daily turnover is under
+        ₹1Cr, you can't realistically buy or sell
+        more than a few lakh rupees worth without moving the price yourself.
+        We exclude these so JADE rankings reflect stocks you can actually
+        trade at the shown prices.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:14px;">For context: the popular <b>Nifty 500</b>
+  benchmark includes only ~500 stocks. JADE's filtered universe is about
+  <b>2.5× larger</b> than Nifty 500 — we keep many mid- and small-cap
+  names that have real liquidity and tradeable prices but aren't yet in
+  the Nifty 500. That's where most of the discovery opportunities live.</p>
+</section>
+
+<section>
+  <h2>Sector and cap classification</h2>
+  <p>Once a stock is in the universe, we attach a sector and market-cap tag:</p>
+  <ul>
+    <li><b>Sectors</b> — a hybrid of NSE's official Industry classification
+    (covers the broad strokes) plus a curated list providing finer subdivisions
+    where useful (Banks split Private vs PSU; Financial Services split into
+    NBFC / AMC / Insurance / Capital Markets; etc.).</li>
+    <li><b>Market cap</b> — Nifty 100 = Large; Nifty Midcap 150 = Mid; Nifty
+    Smallcap 250 = Small; everything outside the Nifty 500 = Micro.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What JADE is not</h2>
+  <ul>
+    <li><b>Not investment advice.</b> JADE is a quantitative ranking — what
+    you do with it is your call.</li>
+    <li><b>Not a price target or return forecast.</b> A high JADE reflects
+    competitive history; it makes no claim about tomorrow's price.</li>
+    <li><b>Not a fundamental rating.</b> JADE doesn't see valuations,
+    balance sheets, management quality, governance, or news. It is purely a
+    competitive-performance rating derived from price history.</li>
+    <li><b>Not static.</b> JADE changes every trading day. Today's #1 may
+    not be next week's #1 — the system is designed to surface live
+    competitive form, not lock in past glories.</li>
+  </ul>
+  <p class="muted" style="margin-top:14px;">Past performance does not predict
+  future results. Position sizing, diversification, and risk management remain
+  the responsibility of the investor.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>JADE = Jadhav Adaptive Daily Equity rating.
+    Daily competitive ratings for NSE equities.</div>
+    <div style="margin-top:6px;">Signal-generation tool, not investment advice.
+    Rankings are derived purely from historical NSE price data. JADE ratings reflect competitive
+    performance, not return forecasts. Past performance does not predict future results.</div>
+  </div>
+</footer>
+
+</body>
+</html>

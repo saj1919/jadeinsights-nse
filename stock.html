@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock Detail — JADE Insights</title>
+<link rel="stylesheet" href="css/site.css">
+<script src="data.js"></script>
+<script src="js/site.js" defer></script>
+
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="mark">J</span>
+      <span class="logo">JADE</span>
+      <span class="tagline">Insights</span>
+    </a>
+    <div class="nav-links"><a href="index.html" class="">Home</a><a href="leaderboard.html" class="active">Leaderboard</a><a href="hall_of_fame.html" class="">Hall of Fame</a><a href="bundles.html" class="">Bundles</a><a href="sectors.html" class="">Sectors</a><a href="trending.html" class="">Trending</a><a href="methodology.html" class="">Methodology</a></div>
+    <div class="nav-search">
+      <span class="icon">⌕</span>
+      <input id="global-search" type="text" placeholder="Search ticker or company…"
+             autocomplete="off" spellcheck="false" />
+      <span class="kbd">/</span>
+      <div id="search-dropdown"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section id="stock-content">
+  <div class="dim">Loading…</div>
+</section>
+
+<script>
+// Render Awards & Honors block for a ticker.
+function renderAwards(t) {
+  const SL = DATA.system_labels || {};
+  function label(k) { return SL[k] || k; }
+  const systems = ['classical','rapid','blitz','combined'];
+
+  // Monthly trophies the stock has won, grouped by system.
+  const won_monthly = {};
+  systems.forEach(sys => {
+    const arr = (DATA.monthly_trophies && DATA.monthly_trophies[sys]) || [];
+    won_monthly[sys] = arr.filter(m => m.ticker === t);
+  });
+
+  // Yearly cups won, grouped by system.
+  const yc = (DATA.year_crowns || []).filter(y => y.ticker === t);
+
+  // Detect World Cup (same ticker wins classical+rapid+blitz in same year)
+  const byYearSystem = {};
+  (DATA.year_crowns || []).forEach(y => {
+    if (!byYearSystem[y.year]) byYearSystem[y.year] = {};
+    byYearSystem[y.year][y.system] = y.ticker;
+  });
+  const worldCupYears = [];
+  Object.keys(byYearSystem).forEach(y => {
+    const sys = byYearSystem[y];
+    if (sys['classical'] === t && sys['rapid'] === t && sys['blitz'] === t) {
+      worldCupYears.push(y);
+    }
+  });
+
+  const totalMonthly = systems.reduce((a, s) => a + won_monthly[s].length, 0);
+  const totalYearly = yc.length;
+  const totalWC = worldCupYears.length;
+  if (totalMonthly === 0 && totalYearly === 0 && totalWC === 0) {
+    // No awards — show a small "no honors yet" hint
+    return '<section><h2>Awards &amp; Honors</h2>' +
+           '<p class="dim">No monthly trophies, yearly cups, or World Cup wins so far. ' +
+           'Doesn\'t mean the stock can\'t earn them — it just hasn\'t held the #1 spot ' +
+           'for long enough in a single calendar month yet.</p></section>';
+  }
+
+  let html = '<section><h2>Awards &amp; Honors</h2>';
+  html += '<p class="lead">Trophies and cups earned over the daily JADE competition.</p>';
+
+  // World Cup banner (rarest first)
+  if (totalWC > 0) {
+    html += '<div class="bundle gold">' +
+            '<div class="bundle-head"><h3>World Cup Winner</h3>' +
+            '<div class="bundle-meta">'+totalWC+' year(s)</div></div>' +
+            '<div class="bundle-thesis">Won the Yearly Cup in <b>all three</b> categories ' +
+            '(' + label('classical') + ', ' + label('rapid') + ', AND ' + label('blitz') +
+            ') in: <b>' + worldCupYears.join(', ') + '</b>. ' +
+            'The rarest prize in the system — universe-best stock for the year.</div></div>';
+  }
+
+  // Yearly Cups
+  if (totalYearly > 0) {
+    html += '<div class="bundle">' +
+            '<div class="bundle-head"><h3>Yearly Cup Winner</h3>' +
+            '<div class="bundle-meta">'+totalYearly+' cup(s)</div></div>' +
+            '<table class="t"><thead><tr>' +
+            '<th>Year</th><th>Category</th><th class="num">Monthly trophies</th>' +
+            '<th class="num">Days at #1</th></tr></thead><tbody>';
+    yc.sort((a, b) => (b.year > a.year ? 1 : -1)).forEach(y => {
+      html += '<tr><td><b>'+y.year+'</b></td>' +
+              '<td>'+label(y.system)+'</td>' +
+              '<td class="num">'+y.trophies+'</td>' +
+              '<td class="num">'+y.total_days_at_1+'</td></tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  // Monthly Trophies (grouped by system, collapsed view)
+  if (totalMonthly > 0) {
+    html += '<div class="bundle">' +
+            '<div class="bundle-head"><h3>Monthly Trophies</h3>' +
+            '<div class="bundle-meta">'+totalMonthly+' across all categories</div></div>' +
+            '<table class="t"><thead><tr>' +
+            '<th>Category</th><th class="num">Trophies</th><th>Months won</th>' +
+            '</tr></thead><tbody>';
+    systems.forEach(sys => {
+      const ms = won_monthly[sys];
+      if (ms.length === 0) return;
+      const monthsStr = ms.map(m => m.month).join(', ');
+      html += '<tr><td><b>'+label(sys)+'</b></td>' +
+              '<td class="num">'+ms.length+'</td>' +
+              '<td class="dim" style="font-size:11px;">'+monthsStr+'</td></tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  html += '</section>';
+  return html;
+}
+
+function fmtSection(t, s) {
+  if (!s) {
+    return '<div class="hero"><h1>Stock not found</h1>'
+         + '<p>Ticker <b>' + (t || '') + '</b> is not in the data set. '
+         + '<a href="leaderboard.html">Browse all stocks</a>.</p></div>';
+  }
+
+  function pct(v, dec) { dec = dec===undefined?1:dec; if(v===null||v===undefined||isNaN(v))return '—'; const sign=v>0?'+':''; return sign+(v*100).toFixed(dec)+'%'; }
+  function num(v, dec) { dec = dec===undefined?0:dec; if(v===null||v===undefined||isNaN(v))return '—'; return Number(v).toFixed(dec); }
+  function price(v) { if(v===null||v===undefined||isNaN(v))return '—'; return '₹'+Number(v).toFixed(2); }
+  function cls(v) { if(v===null||v===undefined||isNaN(v))return 'dim'; return v>0?'up':(v<0?'down':'dim'); }
+
+  // Rank helper — uses s.rank_<system> baked in payload
+  function rankBadge(r) {
+    if (r === null || r === undefined) return '';
+    return '<span class="rank-badge">#' + r + '</span>';
+  }
+
+  let html = '';
+  html += '<div class="stock-head">';
+  html += '<div><span class="symbol">' + s.ticker + '</span>'
+       +  '<span class="price">' + price(s.last_price) + '</span></div>';
+  html += '<div class="meta">';
+  html += 'Sector: <b>' + (s.llm_sector || s.nse_sector || '—') + '</b>';
+  if (s.cap_bucket) html += ' · Cap: <span class="tag cap-'+s.cap_bucket+'">'+s.cap_bucket+'</span>';
+  if (s.vol_bucket) html += ' · Vol: <span class="tag '+s.vol_bucket+'">'+s.vol_bucket+' ('+(s.vol_annual?(s.vol_annual*100).toFixed(0)+'%':'—')+')</span>';
+  if (s.avg_turnover_90d) {
+    const inr = s.avg_turnover_90d;
+    const inrStr = inr >= 1e7 ? '₹'+(inr/1e7).toFixed(1)+'Cr/day' : '₹'+(inr/1e5).toFixed(1)+'L/day';
+    html += ' · Liquidity: <b>'+inrStr+'</b>';
+  }
+  html += '</div></div>';
+
+  // 4 JADE score cards — use display labels from DATA.system_labels
+  const SL = DATA.system_labels || {};
+  function label(key) { return SL[key] || key; }
+
+  // Universe size per category — only stocks that have a JADE rating in
+  // that category count toward "X of Y" and percentile.
+  const universeSize = {};
+  ['classical','rapid','blitz','combined'].forEach(sys => {
+    universeSize[sys] = (DATA.stocks || []).filter(
+      x => x['elo_'+sys] !== null && x['elo_'+sys] !== undefined
+    ).length;
+  });
+
+  function percentileFromRank(rank, total) {
+    if (!rank || !total) return null;
+    // Rank #1 of N → 100%.  Rank #N of N → ~0%.
+    return ((total - rank + 1) / total) * 100;
+  }
+
+  html += '<section><h2>JADE Ratings</h2>';
+  html += '<div class="score-grid">';
+  [
+    ['combined',  s.elo_combined,  s.rank_combined,  'Weighted blend (50% '+label('classical')+' / 30% '+label('rapid')+' / 20% '+label('blitz')+')'],
+    ['classical', s.elo_classical, s.rank_classical, 'Long horizon · 1y / 2y / 3y / 5y returns'],
+    ['rapid',     s.elo_rapid,     s.rank_rapid,     'Mid horizon · 3m – 2y returns'],
+    ['blitz',     s.elo_blitz,     s.rank_blitz,     'Short horizon · 1w – 3m returns'],
+  ].forEach(arr => {
+    const [key, val, rank, hint] = arr;
+    const total = universeSize[key];
+    const pct = percentileFromRank(rank, total);
+    html += '<div class="score-card">';
+    html += '<div class="lbl">'+label(key)+' JADE</div>';
+    html += '<div class="big">'+num(val,0)+rankBadge(rank)+'</div>';
+    if (rank && total) {
+      html += '<div class="sub">#'+rank+' of '+total.toLocaleString()
+           +  ' · <b>'+pct.toFixed(1)+' percentile</b></div>';
+    } else if (val !== null && val !== undefined) {
+      html += '<div class="sub">unranked in this category</div>';
+    }
+    html += '<div class="sub" style="margin-top:4px;">'+hint+'</div>';
+    html += '</div>';
+  });
+  html += '</div></section>';
+
+  // Awards & Honors — Monthly Trophies + Yearly Cups + World Cup
+  html += renderAwards(t);
+
+  // Returns table
+  html += '<section><h2>Returns</h2>';
+  html += '<p class="lead">Cumulative returns at each horizon, plus annualized CAGR for the multi-year windows.</p>';
+  html += '<div class="grid2">';
+  // Cumulative returns
+  html += '<div><h3>Cumulative returns</h3><table class="returns-table">';
+  [['1w','1 week'],['2w','2 weeks'],['1m','1 month'],['3m','3 months'],['6m','6 months'],
+   ['9m','9 months'],['1y','1 year'],['2y','2 years'],['3y','3 years'],
+   ['5y','5 years'],['7y','7 years'],['9y','9 years'],['11y','11 years']].forEach(p => {
+     const v = s['r_'+p[0]];
+     html += '<tr><th>'+p[1]+'</th><td class="'+cls(v)+'">'+pct(v)+'</td></tr>';
+  });
+  html += '</table></div>';
+  // CAGR
+  html += '<div><h3>Annualized return (CAGR)</h3><table class="returns-table">';
+  [['1y','1y CAGR'],['2y','2y CAGR'],['3y','3y CAGR'],['5y','5y CAGR'],
+   ['7y','7y CAGR'],['9y','9y CAGR'],['11y','11y CAGR']].forEach(p => {
+     const v = s['cagr_'+p[0]];
+     html += '<tr><th>'+p[1]+'</th><td class="'+cls(v)+'">'+pct(v)+'</td></tr>';
+  });
+  html += '</table></div>';
+  html += '</div></section>';
+
+  // Peak / Drawdown stats
+  html += '<section><h2>Peak &amp; Drawdown</h2>';
+  html += '<p class="lead">All-time peak JADE per category and current distance from that peak.</p>';
+  html += '<div class="grid2">';
+  ['combined','classical','rapid','blitz'].forEach(sys => {
+    const pk = s['peak_elo_'+sys];
+    const dd = s['peak_drawdown_pct_'+sys];
+    const dsp = s['days_since_peak_'+sys];
+    const date = s['peak_date_'+sys];
+    if (pk === null || pk === undefined) return;
+    html += '<div class="score-card">';
+    html += '<div class="lbl">'+label(sys)+' JADE</div>';
+    html += '<div class="big">Peak '+num(pk,0)+'</div>';
+    html += '<div class="sub">on '+(date||'—')+' · '+(dsp!==null?dsp+'d ago':'')+'</div>';
+    html += '<div class="sub" style="margin-top:6px;">Now: '+num(s['elo_'+sys],0)+' · '
+         + 'From peak: <span class="'+cls(dd)+'">'+pct(dd)+'</span></div>';
+    html += '</div>';
+  });
+  html += '</div></section>';
+
+  // Recent movement
+  html += '<section><h2>Recent Movement</h2>';
+  html += '<p class="lead">JADE deltas across 1-week, 1-month and 3-month windows.</p>';
+  html += '<table class="t" style="font-size:13px;"><thead><tr>';
+  html += '<th>Category</th><th>1w Δ</th><th>1m Δ</th><th>3m Δ</th></tr></thead><tbody>';
+  ['combined','classical','rapid','blitz'].forEach(sys => {
+    html += '<tr><td><b>'+label(sys)+'</b></td>';
+    ['1w','1m','3m'].forEach(p => {
+      const v = s['delta_elo_'+sys+'_'+p];
+      if (v === null || v === undefined) { html += '<td class="dim">—</td>'; }
+      else {
+        const sign = v>0?'+':'';
+        html += '<td class="'+cls(v)+'">'+sign+v.toFixed(0)+'</td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></section>';
+
+  return html;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const url = new URL(window.location.href);
+  const t = (url.searchParams.get('t') || '').toUpperCase();
+  const stock = (DATA.stocks || []).find(s => (s.ticker || '').toUpperCase() === t);
+  document.getElementById('stock-content').innerHTML = fmtSection(t, stock);
+});
+</script>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>JADE = Jadhav Adaptive Daily Equity rating.
+    Daily competitive ratings for NSE equities.</div>
+    <div style="margin-top:6px;">Signal-generation tool, not investment advice.
+    Rankings are derived purely from historical NSE price data. JADE ratings reflect competitive
+    performance, not return forecasts. Past performance does not predict future results.</div>
+  </div>
+</footer>
+
+</body>
+</html>
