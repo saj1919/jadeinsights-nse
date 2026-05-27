@@ -154,7 +154,7 @@ jadeinsights-nse/
 ├── index.html            Homepage
 ├── leaderboard.html      All eligible stocks, filterable
 ├── hall_of_fame.html     Champions, trophies, World Cup
-├── bundles.html          16 portfolio bundles
+├── bundles.html          44 portfolio bundles
 ├── sectors.html          Sector rankings
 ├── trending.html         Movers, Fallen Kings, Rising Stars
 ├── stock.html            Per-stock detail template (reads ?t=TICKER)
