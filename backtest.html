@@ -1,10 +1,16 @@
 <!doctype html>
-<html><head><meta charset="utf-8"/>
-<title>JADE Bundles — 44 Strategies × Last 2 Years</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backtest — JADE Insights</title>
+<link rel="stylesheet" href="css/site.css">
+<script src="data.js"></script>
+<script src="js/site.js" defer></script>
 <style>
 :root{--bg:#0f1218;--card:#171c26;--ink:#e7ecf3;--mute:#8b96a8;--accent:#5fb4ff;--good:#34d399;--bad:#f87171;--warn:#fbbf24}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,Segoe UI,Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:24px;max-width:1400px;margin:0 auto;line-height:1.55}
+
+.bt-page{font-family:-apple-system,Segoe UI,Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:24px;max-width:1400px;margin:0 auto;line-height:1.55}
 h1{font-size:30px;font-weight:700;margin-bottom:6px}
 h2{font-size:19px;font-weight:600;margin:30px 0 12px}
 h3{font-size:14px;font-weight:600;margin:18px 0 8px;color:var(--accent);text-transform:uppercase;letter-spacing:.6px}
@@ -45,9 +51,31 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .pill:hover{background:rgba(255,255,255,0.12);transform:translateY(-1px)}
 .chart-wrap{position:relative;height:560px;width:100%}
 canvas{display:block}
-</style>
+
+.bt-page{margin:0 auto;padding:0 4px;max-width:1400px}</style>
 </head>
 <body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="mark">J</span>
+      <span class="logo">JADE</span>
+      <span class="tagline">Insights</span>
+    </a>
+    <div class="nav-links"><a href="index.html" class="">Home</a><a href="leaderboard.html" class="">Leaderboard</a><a href="hall_of_fame.html" class="">Hall of Fame</a><a href="bundles.html" class="">Bundles</a><a href="sectors.html" class="">Sectors</a><a href="trending.html" class="">Trending</a><a href="backtest.html" class="active">Backtest</a><a href="methodology.html" class="">Methodology</a></div>
+    <div class="nav-search">
+      <span class="icon">⌕</span>
+      <input id="global-search" type="text" placeholder="Search ticker or company…"
+             autocomplete="off" spellcheck="false" />
+      <span class="kbd">/</span>
+      <div id="search-dropdown"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+<section class="hero"><h1>Backtest</h1><p>How the 44 investment bundles performed over the last 2 years versus the NIFTY 50 benchmark.</p></section><div class="bt-page">
 <h1>JADE Bundles — 44 Strategies, Last 2 Years</h1>
 <div class="sub">2-year backtest of all <b>44 backtest-validated bundles</b>, each on its own cadence + hysteresis. Period: <b id="d0"></b> → <b id="d1"></b>. Cost: 25 bps per rotation. Starting capital: ₹1,00,000 per bundle.</div>
 
@@ -421,4 +449,18 @@ document.getElementById('tablecat-filter').onchange = e => {filterCat = e.target
 render();
 renderTable();
 </script>
-</body></html>
+</div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>JADE = Jadhav Adaptive Daily Equity rating.
+    Daily competitive ratings for NSE equities.</div>
+    <div style="margin-top:6px;">Signal-generation tool, not investment advice.
+    Rankings are derived purely from historical NSE price data. JADE ratings reflect competitive
+    performance, not return forecasts. Past performance does not predict future results.</div>
+  </div>
+</footer>
+
+</body>
+</html>
