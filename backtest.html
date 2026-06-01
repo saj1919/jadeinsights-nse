@@ -75,9 +75,21 @@ canvas{display:block}
 </div>
 
 <main>
-<section class="hero"><h1>Backtest</h1><p>How the 44 investment bundles performed over the last 2 years versus the NIFTY 50 benchmark.</p></section><div class="bt-page">
-<h1>JADE Bundles — 44 Strategies, Last 2 Years</h1>
-<div class="sub">2-year backtest of all <b>44 backtest-validated bundles</b>, each on its own cadence + hysteresis. Period: <b id="d0"></b> → <b id="d1"></b>. Cost: 25 bps per rotation. Starting capital: ₹1,00,000 per bundle.</div>
+<section class="hero"><h1>Backtest</h1><p>How the all backtest-validated investment bundles performed over the last 2 years versus the NIFTY 50 benchmark.</p></section><div class="bt-page">
+<h1>JADE Bundles — <span class="bcount">…</span> Strategies, Last 2 Years</h1>
+<div class="sub">2-year backtest of all <b><span class="bcount">…</span> backtest-validated bundles</b>, each on its own cadence + hysteresis. Period: <b id="d0"></b> → <b id="d1"></b>. Cost: 25 bps per rotation. Starting capital: ₹1,00,000 per bundle.</div>
+
+<!-- ============================ FILTER TOGGLE ============================ -->
+<div class="card" style="padding:14px 22px">
+  <div class="controls" style="margin:0">
+    <span style="font-size:13px;color:var(--mute)">Filter:</span>
+    <div class="toggle">
+      <button id="f-all" class="active">All <span class="bcount">…</span></button>
+      <button id="f-beat">Beat NIFTY 50 only (<span id="beat-count">…</span>)</button>
+    </div>
+    <span style="font-size:12px;color:var(--mute)">Applies to both the chart and the table.</span>
+  </div>
+</div>
 
 <div class="kpi-row" id="kpis"></div>
 
@@ -117,7 +129,7 @@ canvas{display:block}
 
 <!-- ============================ FULL TABLE ============================ -->
 <div class="card">
-  <h2 style="margin-top:0">All 44 bundles — sorted by 2-year P&L</h2>
+  <h2 style="margin-top:0">All <span class="bcount">…</span> bundles — sorted by 2-year P&L</h2>
   <div class="controls">
     <input id="search" type="text" placeholder="Filter by name..." style="width:240px"/>
     <select id="cad-filter">
@@ -181,19 +193,28 @@ document.getElementById('d0').textContent = D.start;
 document.getElementById('d1').textContent = D.end;
 const INV = 100000;
 
+// ----- Dynamic counts in headings + filter buttons -----
+const summAll = D.summary;
+const beatNiftyCount = summAll.filter(r => r.beats_nifty_3yr).length;
+document.querySelectorAll('.bcount').forEach(el => { el.textContent = summAll.length; });
+document.getElementById('beat-count').textContent = beatNiftyCount;
+
+// Visible set (mutates with filter)
+let summ = summAll.slice();
+let filterMode = 'all';
+
 // ----- KPIs -----
-const summ = D.summary;
-const best = summ[0];
-const worst = summ[summ.length-1];
-const beating = summ.filter(r => r.pnl_pct > D.bench_pnl_pct).length;
-const avg2y = summ.reduce((a,b) => a+b.pnl_pct, 0) / summ.length;
+const best = summAll[0];
+const worst = summAll[summAll.length-1];
+const beating = beatNiftyCount;
+const avg2y = summAll.reduce((a,b) => a+b.pnl_pct, 0) / summAll.length;
 function kpi(label,val,sub,cls=''){return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val ${cls}">${val}</div><div class="kpi-sub">${sub}</div></div>`}
 function fmtPct(v){return (v>=0?'+':'') + Number(v).toFixed(2) + '%'}
 function cls(v){return v>=0?'good':'bad'}
 document.getElementById('kpis').innerHTML =
   kpi('Best bundle', best.name, `${fmtPct(best.pnl_pct)} · 2yr`, cls(best.pnl_pct)) +
-  kpi('Avg of 44 bundles', fmtPct(avg2y), `vs NIFTY ${fmtPct(D.bench_pnl_pct)}`, cls(avg2y)) +
-  kpi('Beating NIFTY 50', `${beating} / 44`, `> ${D.bench_pnl_pct.toFixed(1)}%`, beating>22?'good':'mute') +
+  kpi(`Avg of ${summAll.length} bundles`, fmtPct(avg2y), `vs NIFTY ${fmtPct(D.bench_pnl_pct)}`, cls(avg2y)) +
+  kpi('Beating NIFTY 50', `${beating} / ${summAll.length}`, `> ${D.bench_pnl_pct.toFixed(1)}%`, beating>summAll.length/2?'good':'mute') +
   kpi('Weakest bundle', worst.name, fmtPct(worst.pnl_pct), cls(worst.pnl_pct));
 
 // ----- Headlines -----
@@ -444,6 +465,28 @@ document.querySelectorAll('#tbl th').forEach(th => {
 document.getElementById('search').oninput = e => {filterQ = e.target.value; renderTable();};
 document.getElementById('cad-filter').onchange = e => {filterCad = e.target.value; renderTable();};
 document.getElementById('tablecat-filter').onchange = e => {filterCat = e.target.value; renderTable();};
+
+// ----- NIFTY-beat filter toggle -----
+function applyFilter(mode){
+  filterMode = mode;
+  document.getElementById('f-all').classList.toggle('active', mode === 'all');
+  document.getElementById('f-beat').classList.toggle('active', mode === 'beat');
+  summ = (mode === 'beat')
+    ? summAll.filter(r => r.beats_nifty_3yr)
+    : summAll.slice();
+  // Keep activeBundles in the visible set
+  const allowed = new Set(summ.map(r => r.id));
+  activeBundles = activeBundles.filter(id => allowed.has(id));
+  if (activeBundles.length === 0) {
+    activeBundles = summ.slice(0, Math.min(5, summ.length)).map(r => r.id);
+  }
+  // Refresh dropdown to reflect filter
+  sp.innerHTML = summ.map(r => `<option value="${r.id}">${r.name} (${fmtPct(r.pnl_pct)})</option>`).join('');
+  render();
+  renderTable();
+}
+document.getElementById('f-all').onclick  = () => applyFilter('all');
+document.getElementById('f-beat').onclick = () => applyFilter('beat');
 
 // Init
 render();

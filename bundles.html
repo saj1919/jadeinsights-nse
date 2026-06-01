@@ -33,9 +33,15 @@
 
 <section class="hero">
   <h1>Investment Bundles</h1>
-  <p>44 backtest-validated portfolios across system, volatility, cap-tier, sector,
+  <p>135 backtest-validated portfolios across system, volatility, cap-tier, sector,
   style and discovery categories. Equal-weighted unless noted. Pick one that
   matches your horizon and risk profile, or combine multiple.</p>
+  <div class="bundle-filter" style="margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span style="font-size:13px;color:var(--dim)">Show:</span>
+    <button class="bf-btn active" data-mode="all" style="padding:6px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#000;font-weight:600;cursor:pointer;font-size:12px">All 135</button>
+    <button class="bf-btn" data-mode="beat" style="padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:var(--text);cursor:pointer;font-size:12px">Beat NIFTY 50 only (119)</button>
+    <span style="font-size:12px;color:var(--dim)">Filters by 3-year backtest result.</span>
+  </div>
 </section>
 
 <section>
@@ -1391,6 +1397,42 @@
 </div>
 
 </section>
+
+<script>
+(function() {
+  function setMode(mode) {
+    document.querySelectorAll('.bf-btn').forEach(b => {
+      const active = b.dataset.mode === mode;
+      b.classList.toggle('active', active);
+      b.style.background = active ? 'var(--accent)' : 'rgba(255,255,255,0.05)';
+      b.style.color = active ? '#000' : 'var(--text)';
+      b.style.borderColor = active ? 'var(--accent)' : 'rgba(255,255,255,0.15)';
+      b.style.fontWeight = active ? '600' : '400';
+    });
+    document.querySelectorAll('.bundle').forEach(card => {
+      const beats = card.querySelector('.pill.up') !== null
+                 && card.querySelector('[class*="bundle-meta"] .pill.up') !== null;
+      // Simpler check: green pill says "Beat NIFTY"; if absent it underperformed.
+      const text = card.querySelector('.bundle-meta')?.textContent || '';
+      const passes = (mode === 'all') || text.includes('Beat NIFTY 50');
+      card.style.display = passes ? '' : 'none';
+    });
+    // Hide empty category headings
+    document.querySelectorAll('h2').forEach(h => {
+      let visible = false;
+      let sib = h.nextElementSibling;
+      while (sib && sib.tagName !== 'H2') {
+        if (sib.classList.contains('bundle') && sib.style.display !== 'none') {
+          visible = true; break;
+        }
+        sib = sib.nextElementSibling;
+      }
+      h.style.display = (visible || h.textContent === '') ? '' : 'none';
+    });
+  }
+  document.querySelectorAll('.bf-btn').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+})();
+</script>
 
 </main>
 
