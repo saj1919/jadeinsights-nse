@@ -234,6 +234,29 @@ function fmtSection(t, s) {
   html += '</table></div>';
   html += '</div></section>';
 
+  // Risk-adjusted return — Sharpe over 1y and 3y daily-return windows.
+  // Sharpe rule-of-thumb for an individual NSE equity: >1 is solid,
+  // >1.5 is excellent, <0 means the stock lost money before adjusting
+  // for vol. Colored via the same up/down/dim classes.
+  function sharpeClass(v){
+    if (v === null || v === undefined || isNaN(v)) return 'dim';
+    if (v >= 1.0) return 'up';
+    if (v <  0)   return 'down';
+    return 'dim';
+  }
+  function sharpeFmt(v){
+    if (v === null || v === undefined || isNaN(v)) return '—';
+    return Number(v).toFixed(2);
+  }
+  if (s.sharpe_1y !== undefined || s.sharpe_3y !== undefined) {
+    html += '<section><h2>Risk-adjusted return (Sharpe)</h2>';
+    html += '<p class="lead">Annualized Sharpe ratio computed on daily returns (risk-free rate = 0). &gt; 1.0 is solid, &gt; 1.5 is excellent, &lt; 0 means returns didn\'t compensate for the volatility taken.</p>';
+    html += '<div class="grid2">';
+    html += '<div class="score-card"><div class="lbl">1-year Sharpe</div><div class="big '+sharpeClass(s.sharpe_1y)+'">'+sharpeFmt(s.sharpe_1y)+'</div><div class="sub">Trailing 252 trading days · annualized</div></div>';
+    html += '<div class="score-card"><div class="lbl">3-year Sharpe</div><div class="big '+sharpeClass(s.sharpe_3y)+'">'+sharpeFmt(s.sharpe_3y)+'</div><div class="sub">Trailing 3 years · less noisy</div></div>';
+    html += '</div></section>';
+  }
+
   // Peak / Drawdown stats
   html += '<section><h2>Peak &amp; Drawdown</h2>';
   html += '<p class="lead">All-time peak JADE per category and current distance from that peak.</p>';
