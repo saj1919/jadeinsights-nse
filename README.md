@@ -40,6 +40,7 @@ A **Combined JADE** rating is a weighted blend across all three.
 | Leaderboard      | Every eligible stock, ranked by JADE per category. Sortable on any column, filterable by sector / cap / vol |
 | Hall of Fame     | Today's #1 per category. Cumulative leaders, longest streaks, World Cup standings, Monthly Trophy roll      |
 | Bundles          | All backtest-validated portfolios — every one above 15% CAGR over 3 years (range +52% to +413%)             |
+| Backtest         | 2-year P&L vs NIFTY 50 for the full bundle set + **year-on-year trend** view (Y1/Y2/Y3 returns, accelerating bundles)|
 | Sectors          | Sectors ranked by median JADE. Best stock per sector                                                       |
 | Trending         | 1-week / 1-month / 3-month JADE movers. Fallen Kings and Rising Stars                                       |
 | Stock detail     | Per-stock deep-dive: JADE ratings + returns at every horizon + CAGR + peak/drawdown + awards earned         |
