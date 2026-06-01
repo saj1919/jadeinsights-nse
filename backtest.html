@@ -52,7 +52,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .chart-wrap{position:relative;height:560px;width:100%}
 canvas{display:block}
 
-.bt-page{margin:0 auto;padding:0 4px;max-width:1400px}</style><meta name="build-id" content="1780321895"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+.bt-page{margin:0 auto;padding:0 4px;max-width:1400px}</style><meta name="build-id" content="1780324600-btfmt"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 </head>
 <body>
 
@@ -75,7 +75,7 @@ canvas{display:block}
 </div>
 
 <main>
-<section class="hero"><h1>Backtest</h1><p>How the all backtest-validated investment bundles performed over the last 2 years versus the NIFTY 50 benchmark. <span style="opacity:0.5;font-size:11px">Build: 1780321895</span></p></section><div class="bt-page">
+<section class="hero"><h1>Backtest</h1><p>How the all backtest-validated investment bundles performed over the last 2 years versus the NIFTY 50 benchmark. <span style="opacity:0.5;font-size:11px">Build: 1780324600-btfmt</span></p></section><div class="bt-page">
 <h1>JADE Bundles — <span class="bcount">…</span> Strategies, Last 2 Years</h1>
 <div class="sub">2-year backtest of all <b><span class="bcount">…</span> backtest-validated bundles</b>, each on its own cadence + hysteresis. Period: <b id="d0"></b> → <b id="d1"></b>. Cost: 25 bps per rotation. Starting capital: ₹1,00,000 per bundle.</div>
 
@@ -209,22 +209,23 @@ const worst = summAll[summAll.length-1];
 const beating = beatNiftyCount;
 const avg2y = summAll.reduce((a,b) => a+b.pnl_pct, 0) / summAll.length;
 function kpi(label,val,sub,cls=''){return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val ${cls}">${val}</div><div class="kpi-sub">${sub}</div></div>`}
-function fmtPct(v){
-  // Defensive: auto-correct any value that's clearly been ×100'd upstream
-  // (any bundle return > +1000% / < -1000% is unrealistic, so we know the
-  // caller accidentally multiplied). This makes the formatter robust against
-  // a class of upstream bugs that previously produced "+11958.0%" instead
-  // of "+119.58%".
+function btFmtPct(v){
+  // Renamed from fmtPct to avoid clashing with the site-wide fmtPct in
+  // js/site.js (which multiplies by 100 because the rest of the site uses
+  // decimal returns). Backtest values are already in percent units.
   let n = Number(v);
-  if (Math.abs(n) > 1000) n = n / 100;
+  if (Math.abs(n) > 1000) n = n / 100; // defensive ×100 auto-correct
   return (n>=0?'+':'') + n.toFixed(2) + '%';
 }
+// Backwards-compat alias kept locally — IMPORTANT: do NOT assign to global
+// fmtPct, because js/site.js (deferred) would still override it.
+const fmtPct_BT = btFmtPct;
 function cls(v){return v>=0?'good':'bad'}
 document.getElementById('kpis').innerHTML =
-  kpi('Best bundle', best.name, `${fmtPct(best.pnl_pct)} · 2yr`, cls(best.pnl_pct)) +
-  kpi(`Avg of ${summAll.length} bundles`, fmtPct(avg2y), `vs NIFTY ${fmtPct(D.bench_pnl_pct)}`, cls(avg2y)) +
+  kpi('Best bundle', best.name, `${btFmtPct(best.pnl_pct)} · 2yr`, cls(best.pnl_pct)) +
+  kpi(`Avg of ${summAll.length} bundles`, btFmtPct(avg2y), `vs NIFTY ${btFmtPct(D.bench_pnl_pct)}`, cls(avg2y)) +
   kpi('Beating NIFTY 50', `${beating} / ${summAll.length}`, `> ${D.bench_pnl_pct.toFixed(1)}%`, beating>summAll.length/2?'good':'mute') +
-  kpi('Weakest bundle', worst.name, fmtPct(worst.pnl_pct), cls(worst.pnl_pct));
+  kpi('Weakest bundle', worst.name, btFmtPct(worst.pnl_pct), cls(worst.pnl_pct));
 
 // ----- Headlines -----
 const bestSharpe = [...summ].sort((a,b)=>b.sharpe-a.sharpe)[0];
@@ -234,11 +235,11 @@ const weekly_r  = summ.filter(r=>r.cadence==='weekly_thu');
 const avg_mo = monthly_r.reduce((a,b)=>a+b.pnl_pct,0)/monthly_r.length;
 const avg_wk = weekly_r.reduce((a,b)=>a+b.pnl_pct,0)/weekly_r.length;
 document.getElementById('headline-1').innerHTML =
-  `<b>${best.name}</b> dominates at <span class="${cls(best.pnl_pct)}">${fmtPct(best.pnl_pct)}</span> over 2 years — ${Math.round(best.pnl_pct/D.bench_pnl_pct)}× the NIFTY 50 benchmark of ${fmtPct(D.bench_pnl_pct)}.`;
+  `<b>${best.name}</b> dominates at <span class="${cls(best.pnl_pct)}">${btFmtPct(best.pnl_pct)}</span> over 2 years — ${Math.round(best.pnl_pct/D.bench_pnl_pct)}× the NIFTY 50 benchmark of ${btFmtPct(D.bench_pnl_pct)}.`;
 document.getElementById('headline-2').innerHTML =
   `<b>Best risk-adjusted</b>: <b>${bestSharpe.name}</b> with Sharpe ${bestSharpe.sharpe.toFixed(2)}. <b>Lowest drawdown</b>: <b>${bestDD.name}</b> with max DD just ${bestDD.max_dd_pct.toFixed(1)}%.`;
 document.getElementById('headline-3').innerHTML =
-  `<b>Weekly Thursday cadence</b> averaged <span class="${cls(avg_wk)}">${fmtPct(avg_wk)}</span> across ${weekly_r.length} bundles. <b>Monthly cadence</b> averaged <span class="${cls(avg_mo)}">${fmtPct(avg_mo)}</span> across ${monthly_r.length} bundles.`;
+  `<b>Weekly Thursday cadence</b> averaged <span class="${cls(avg_wk)}">${btFmtPct(avg_wk)}</span> across ${weekly_r.length} bundles. <b>Monthly cadence</b> averaged <span class="${cls(avg_mo)}">${btFmtPct(avg_mo)}</span> across ${monthly_r.length} bundles.`;
 
 // ----- Chart palette: distinct hues, high contrast -----
 const PALETTE = [
@@ -349,7 +350,7 @@ function renderLegend(){
     return `<span class="pill active" data-id="${id}">
       <span class="dot" style="background:${c}"></span>
       <span class="nm">${r.name}</span>
-      <span class="pct ${cls(r.pnl_pct)}">${fmtPct(r.pnl_pct)}</span>
+      <span class="pct ${cls(r.pnl_pct)}">${btFmtPct(r.pnl_pct)}</span>
     </span>`;
   }).join('');
   leg.querySelectorAll('.pill').forEach(el => {
@@ -389,7 +390,7 @@ document.getElementById('b-cat').onclick    = () => setMode('cat');
 
 // Populate single-pick dropdown
 const sp = document.getElementById('single-pick');
-sp.innerHTML = summ.map(r => `<option value="${r.id}">${r.name} (${fmtPct(r.pnl_pct)})</option>`).join('');
+sp.innerHTML = summ.map(r => `<option value="${r.id}">${r.name} (${btFmtPct(r.pnl_pct)})</option>`).join('');
 sp.onchange = () => { activeBundles = [sp.value]; render(); renderTable(); };
 
 document.getElementById('cat-filter').onchange = filterByCat;
@@ -442,8 +443,8 @@ function renderTable(){
       <td><span class="${catCls}">${r.category}</span></td>
       <td>${cad}</td>
       <td class="num">${r.hysteresis || '—'}</td>
-      <td class="num ${cls(r.pnl_pct)}">${fmtPct(r.pnl_pct)}</td>
-      <td class="num ${cls(r.cagr_pct)}">${fmtPct(r.cagr_pct)}</td>
+      <td class="num ${cls(r.pnl_pct)}">${btFmtPct(r.pnl_pct)}</td>
+      <td class="num ${cls(r.cagr_pct)}">${btFmtPct(r.cagr_pct)}</td>
       <td class="num">${r.sharpe.toFixed(2)}</td>
       <td class="num bad">${r.max_dd_pct.toFixed(1)}%</td>
       <td class="num mute">${r.churn}</td>
@@ -490,7 +491,7 @@ function applyFilter(mode){
     activeBundles = summ.slice(0, Math.min(5, summ.length)).map(r => r.id);
   }
   // Refresh dropdown to reflect filter
-  sp.innerHTML = summ.map(r => `<option value="${r.id}">${r.name} (${fmtPct(r.pnl_pct)})</option>`).join('');
+  sp.innerHTML = summ.map(r => `<option value="${r.id}">${r.name} (${btFmtPct(r.pnl_pct)})</option>`).join('');
   render();
   renderTable();
 }
