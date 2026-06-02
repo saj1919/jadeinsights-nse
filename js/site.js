@@ -40,19 +40,40 @@ function capTag(c) {
 }
 
 // --- Sortable tables ---
+// Click a column header to sort by that column.
+//   • First click on a NEW column:
+//       — numeric columns (data-type='number') sort DESCENDING first
+//         (so "1y return" / "Sharpe" / "JADE" show biggest values on top),
+//       — string columns sort ASCENDING first (A → Z).
+//   • Click the same column again → toggle direction.
+//   • The header gets a ↑ / ↓ arrow via the CSS rules
+//     `th.sorted-asc::after` / `th.sorted-desc::after`.
+// NaN / empty values always sort to the BOTTOM regardless of direction,
+// so a stock missing 5y CAGR (e.g. newly listed) doesn't anchor the top
+// of the table when you sort by 5y CAGR descending.
 function makeSortable(tableId) {
   const table = document.getElementById(tableId);
   if (!table) return;
   const ths = table.querySelectorAll('thead th[data-sort]');
   ths.forEach((th, idx) => {
     th.addEventListener('click', () => {
-      const sortKey = th.dataset.sort;
       const dataType = th.dataset.type || 'string';
       const tbody = table.tBodies[0];
       const rows = Array.from(tbody.rows);
-      const ascending = th.classList.contains('sorted-asc') ? false : true;
 
-      // Clear other sort indicators
+      // Determine direction.
+      // If this column is already the active sort: flip direction.
+      // Otherwise: number → desc-first, string → asc-first.
+      let ascending;
+      if (th.classList.contains('sorted-asc')) {
+        ascending = false;
+      } else if (th.classList.contains('sorted-desc')) {
+        ascending = true;
+      } else {
+        ascending = (dataType !== 'number');
+      }
+
+      // Clear all sort indicators, then mark this column.
       ths.forEach(t => t.classList.remove('sorted-asc', 'sorted-desc'));
       th.classList.add(ascending ? 'sorted-asc' : 'sorted-desc');
 
@@ -62,10 +83,18 @@ function makeSortable(tableId) {
         if (dataType === 'number') {
           const an = parseFloat(av);
           const bn = parseFloat(bv);
-          const ax = isNaN(an) ? -Infinity : an;
-          const bx = isNaN(bn) ? -Infinity : bn;
-          return ascending ? ax - bx : bx - ax;
+          const aNaN = isNaN(an);
+          const bNaN = isNaN(bn);
+          // Always push NaN / blank to the bottom, no matter the direction.
+          if (aNaN && bNaN) return 0;
+          if (aNaN) return 1;
+          if (bNaN) return -1;
+          return ascending ? an - bn : bn - an;
         }
+        // String: empty strings sort to the bottom too.
+        if (!av && !bv) return 0;
+        if (!av) return 1;
+        if (!bv) return -1;
         return ascending ? av.localeCompare(bv) : bv.localeCompare(av);
       });
       rows.forEach(r => tbody.appendChild(r));
