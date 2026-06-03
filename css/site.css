@@ -418,6 +418,35 @@ table.t .num    { text-align: right; }
   color: var(--text); padding: 6px 10px; border-radius: 3px;
   font-size: 12px;
 }
+.lb-clear-btn {
+  background: var(--panel); border: 1px solid var(--line-2);
+  color: var(--mute); padding: 6px 12px; border-radius: 3px;
+  font-size: 12px; cursor: pointer;
+}
+.lb-clear-btn:hover { color: var(--text); border-color: var(--accent); }
+
+/* ============= Per-column filter row ============= */
+table.t thead tr.lb-filter-row th {
+  padding: 4px 4px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  font-weight: normal;
+  cursor: default;        /* not sortable */
+  color: var(--mute);
+}
+table.t thead tr.lb-filter-row th::after { content: ''; }  /* no sort arrow */
+table.t thead tr.lb-filter-row th:hover { color: var(--mute); }
+table.t thead tr.lb-filter-row input.lb-colf {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--panel); border: 1px solid var(--line-2);
+  color: var(--text); padding: 4px 7px; border-radius: 3px;
+  font-size: 11px; font-family: inherit;
+}
+table.t thead tr.lb-filter-row input.lb-colf:focus {
+  outline: none; border-color: var(--accent);
+}
+table.t thead tr.lb-filter-row input.lb-colf::placeholder { color: var(--mute); opacity: 0.6; }
 
 /* ============= Stock detail header ============= */
 .stock-head {
