@@ -33,16 +33,16 @@
 
 <section class="hero">
   <h1><span class="accent">JADE</span> · Daily Equity Insights</h1>
-  <p>Daily competitive ratings for NSE equities. <b>1,249</b> stocks tracked,
+  <p>Daily competitive ratings for NSE equities. <b>1,253</b> stocks tracked,
      <b>1,245</b> with long-horizon coverage,
      a <b>4-year</b> daily competitive ranking system running under the hood.
-     <span class="dim">Snapshot · 2026-06-02</span></p>
+     <span class="dim">Snapshot · 2026-06-30</span></p>
 </section>
 
 <div class="stat-strip">
   <div class="stat-card">
     <div class="lbl">Universe</div>
-    <div class="val">1,249</div>
+    <div class="val">1,253</div>
     <div class="sub">tradeable equities</div>
   </div>
   <div class="stat-card">
@@ -57,7 +57,7 @@
   </div>
   <div class="stat-card">
     <div class="lbl">Last update</div>
-    <div class="val" style="font-size:15px; margin-top:8px;">2026-06-02</div>
+    <div class="val" style="font-size:15px; margin-top:8px;">2026-06-30</div>
     <div class="sub">NSE close</div>
   </div>
 </div>
@@ -66,16 +66,100 @@
   <h2>Daily Brief</h2>
   <p class="lead">Today's reigning champions and notable movements.</p>
   <div class="info-grid">
-    <div class='info-tile accent-gold'><div class='label'>Compounder · #1 Today</div><div class='ticker'><a href='stock.html?t=ATHERENERG'>ATHERENERG</a></div><div class='sub'>2-day streak</div></div><div class='info-tile accent-gold'><div class='label'>Momentum · #1 Today</div><div class='ticker'><a href='stock.html?t=MTARTECH'>MTARTECH</a></div><div class='sub'>2-day streak</div></div><div class='info-tile accent-gold'><div class='label'>Breakout · #1 Today</div><div class='ticker'><a href='stock.html?t=EXICOM'>EXICOM</a></div><div class='sub'>1-day streak</div></div>
-    <div class='info-tile accent-up'><div class='label'>Weekly Leader</div><div class='ticker'><a href='stock.html?t=TERASOFT'>TERASOFT</a></div><div class='body'>Gained <b class='up'>+827</b> JADE this week. Sector: Other. 1-month return: <b class='up'>+22.8%</b>.</div></div><div class='info-tile accent-down'><div class='label'>Weekly Decliner</div><div class='ticker'><a href='stock.html?t=BAJAJINDEF'>BAJAJINDEF</a></div><div class='body'>Lost <b class='down'>-910</b> JADE this week. 1-month return: <b class='down'>-16.0%</b>.</div></div><div class='info-tile accent'><div class='label'>Universe Coverage</div><div class='ticker'>1,249 of 1,909</div><div class='body'>Filtered down from all NSE equity listings by removing ETFs (163), suspended/no-price stocks (217) and illiquid names (280). <a href='methodology.html'>See the full filter funnel →</a></div></div>
+    <div class='info-tile accent-gold'><div class='label'>Compounder · #1 Today</div><div class='ticker'><a href='stock.html?t=KMEW'>KMEW</a></div><div class='sub'>2-day streak</div></div><div class='info-tile accent-gold'><div class='label'>Momentum · #1 Today</div><div class='ticker'><a href='stock.html?t=KERNEX'>KERNEX</a></div><div class='sub'>2-day streak</div></div><div class='info-tile accent-gold'><div class='label'>Breakout · #1 Today</div><div class='ticker'><a href='stock.html?t=AEGISLOG'>AEGISLOG</a></div><div class='sub'>1-day streak</div></div>
+    <div class='info-tile accent-up'><div class='label'>Weekly Leader</div><div class='ticker'><a href='stock.html?t=RAMCOSYS'>RAMCOSYS</a></div><div class='body'>Gained <b class='up'>+1094</b> JADE this week. Sector: IT Services. 1-month return: <b class='up'>+87.0%</b>.</div></div><div class='info-tile accent-down'><div class='label'>Weekly Decliner</div><div class='ticker'><a href='stock.html?t=JGCHEM'>JGCHEM</a></div><div class='body'>Lost <b class='down'>-756</b> JADE this week. 1-month return: <b class='down'>-2.1%</b>.</div></div><div class='info-tile accent'><div class='label'>Universe Coverage</div><div class='ticker'>1,253 of 1,923</div><div class='body'>Filtered down from all NSE equity listings by removing ETFs (162), suspended/no-price stocks (248) and illiquid names (260). <a href='methodology.html'>See the full filter funnel →</a></div></div>
   </div>
 </section>
+
+
+<section id="strategy-picks">
+  <h2>Today's Strategy Picks · 3 Variants</h2>
+  <p class="lead">Same top-5 stocks (selected by Δ5d × Sharpe). Different weighting power.
+    Enter your investment amount below — allocations recompute live.
+    <a href="leaderboard.html?sharpe=%3E%3D2.0&jade_delta_5d_combined=%3E0&price=%3C%3D100000&liquidity=%3E25cr">View full leaderboard with these filters →</a></p>
+
+  <details class="strategy-method" open>
+    <summary>Methodology — exact filters, selection rule, weighting formulas, rebalance rules</summary>
+    <div class="strategy-method-body">
+      <div class="method-grid">
+        <div class="method-block">
+          <div class="method-head">① Eligibility filters · all variants</div>
+          <ol class="method-list">
+            <li><b>Not an ETF</b> — exclude all index/commodity/bond ETFs</li>
+            <li><b>Price ≥ ₹50</b> — exclude penny stocks</li>
+            <li><b>Price ≤ ₹1,00,000</b> — your requested upper bound (functionally no cap; no NSE equity above ~₹30K)</li>
+            <li><b>90-day avg turnover ≥ ₹25 Cr</b> — liquid enough to enter/exit without major impact</li>
+            <li><b>Sharpe (1y rolling, rf=0) ≥ 2.0</b> — quality threshold</li>
+            <li><b>Δ5d (Combined JADE, 5 trading days) &gt; 0</b> — short-term momentum is positive</li>
+          </ol>
+        </div>
+        <div class="method-block">
+          <div class="method-head">② Selection rule</div>
+          <p class="method-text">Among all eligible stocks, compute the composite score:
+            <code class="formula">score = Δ5d × Sharpe</code>
+            then take the <b>top 5</b> by score (descending).</p>
+          <div class="method-head" style="margin-top:14px;">③ Weighting formulas</div>
+          <p class="method-text">All three variants pick the <b>same 5 stocks</b>. They differ only in how capital is split among those 5.
+            For each variant, weight stock <i>i</i> by:
+            <code class="formula">w<sub>i</sub> = Sharpe<sub>i</sub><sup>p</sup> ÷ Σ Sharpe<sub>j</sub><sup>p</sup></code>
+            where <i>p</i> = 2 (Conservative · 🟢), 5 (Aggressive · 🟡), or 8 (Max · 🔴).</p>
+        </div>
+        <div class="method-block">
+          <div class="method-head">④ Rebalance rules</div>
+          <ul class="method-list">
+            <li><b>Cadence:</b> monthly</li>
+            <li><b>Rebalance day:</b> first trading day of each calendar month</li>
+            <li><b>Transaction cost:</b> 25 bps per side (modelled as 12.5 bps × turnover)</li>
+            <li><b>Holding period:</b> exactly one month (sell, buy, hold)</li>
+            <li><b>No leverage, no shorting, no derivatives</b></li>
+          </ul>
+          <div class="method-head" style="margin-top:14px;">⑤ Backtest stats shown</div>
+          <p class="method-text"><b>CAGR</b> and <b>Max DD</b> on each card are the
+            <b>average across four windows</b>: 1y, 2y, 3y, and 4y all ending on the latest available date.
+            All return calculations are point-in-time — selection uses only data dated &le; rebalance date.</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="strategy-input-row">
+    <label for="strategy-amount">Investment amount (₹):</label>
+    <input type="number" id="strategy-amount" min="0" step="1000" value="525000">
+    <button type="button" id="strategy-reset" class="strategy-btn">Reset to ₹5,25,000</button>
+  </div>
+
+  <div class="strategy-grid">
+    <div class='strategy-card' data-variant='conservative'><div class='strategy-head'><div class='strategy-title'>🟢 <b>Conservative</b></div><div class='strategy-meta'><span class='dim'>weighting</span> Sharpe²</div></div><div class='strategy-stats'><span class='stat-pill'><span class='dim'>CAGR</span> <b class='up'>+95.0%</b></span><span class='stat-pill'><span class='dim'>Max DD</span> <b class='down'>−14.0%</b></span></div><table class='t strategy-tbl'><thead><tr><th>Ticker</th><th>Price</th><th>Sharpe</th><th>Δ5d</th><th>Weight</th><th>Allocation</th></tr></thead><tbody><tr><td><a class="ticker-link" href="stock.html?t=ACUTAAS">ACUTAAS</a></td><td>₹3,526.20</td><td>2.88</td><td class='up'>+276</td><td><b>28.2%</b></td><td class='alloc' data-w='0.281722'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=HFCL">HFCL</a></td><td>₹212.85</td><td>2.35</td><td class='up'>+296</td><td><b>18.7%</b></td><td class='alloc' data-w='0.186582'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=WHEELS">WHEELS</a></td><td>₹1,786.00</td><td>2.22</td><td class='up'>+237</td><td><b>16.7%</b></td><td class='alloc' data-w='0.166669'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=BHARATFORG">BHARATFORG</a></td><td>₹2,144.10</td><td>2.13</td><td class='up'>+178</td><td><b>15.4%</b></td><td class='alloc' data-w='0.153934'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=THANGAMAYL">THANGAMAYL</a></td><td>₹6,398.20</td><td>2.50</td><td class='up'>+142</td><td><b>21.1%</b></td><td class='alloc' data-w='0.211092'>₹0</td></tr></tbody></table></div><div class='strategy-card' data-variant='aggressive'><div class='strategy-head'><div class='strategy-title'>🟡 <b>Aggressive</b></div><div class='strategy-meta'><span class='dim'>weighting</span> Sharpe⁵</div></div><div class='strategy-stats'><span class='stat-pill'><span class='dim'>CAGR</span> <b class='up'>+126.4%</b></span><span class='stat-pill'><span class='dim'>Max DD</span> <b class='down'>−14.2%</b></span></div><table class='t strategy-tbl'><thead><tr><th>Ticker</th><th>Price</th><th>Sharpe</th><th>Δ5d</th><th>Weight</th><th>Allocation</th></tr></thead><tbody><tr><td><a class="ticker-link" href="stock.html?t=ACUTAAS">ACUTAAS</a></td><td>₹3,526.20</td><td>2.88</td><td class='up'>+276</td><td><b>42.9%</b></td><td class='alloc' data-w='0.428660'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=HFCL">HFCL</a></td><td>₹212.85</td><td>2.35</td><td class='up'>+296</td><td><b>15.3%</b></td><td class='alloc' data-w='0.153016'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=WHEELS">WHEELS</a></td><td>₹1,786.00</td><td>2.22</td><td class='up'>+237</td><td><b>11.5%</b></td><td class='alloc' data-w='0.115398'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=BHARATFORG">BHARATFORG</a></td><td>₹2,144.10</td><td>2.13</td><td class='up'>+178</td><td><b>9.5%</b></td><td class='alloc' data-w='0.094601'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=THANGAMAYL">THANGAMAYL</a></td><td>₹6,398.20</td><td>2.50</td><td class='up'>+142</td><td><b>20.8%</b></td><td class='alloc' data-w='0.208324'>₹0</td></tr></tbody></table></div><div class='strategy-card' data-variant='max'><div class='strategy-head'><div class='strategy-title'>🔴 <b>Max Performance</b></div><div class='strategy-meta'><span class='dim'>weighting</span> Sharpe⁸</div></div><div class='strategy-stats'><span class='stat-pill'><span class='dim'>CAGR</span> <b class='up'>+140.7%</b></span><span class='stat-pill'><span class='dim'>Max DD</span> <b class='down'>−14.6%</b></span></div><table class='t strategy-tbl'><thead><tr><th>Ticker</th><th>Price</th><th>Sharpe</th><th>Δ5d</th><th>Weight</th><th>Allocation</th></tr></thead><tbody><tr><td><a class="ticker-link" href="stock.html?t=ACUTAAS">ACUTAAS</a></td><td>₹3,526.20</td><td>2.88</td><td class='up'>+276</td><td><b>58.2%</b></td><td class='alloc' data-w='0.581650'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=HFCL">HFCL</a></td><td>₹212.85</td><td>2.35</td><td class='up'>+296</td><td><b>11.2%</b></td><td class='alloc' data-w='0.111907'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=WHEELS">WHEELS</a></td><td>₹1,786.00</td><td>2.22</td><td class='up'>+237</td><td><b>7.1%</b></td><td class='alloc' data-w='0.071253'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=BHARATFORG">BHARATFORG</a></td><td>₹2,144.10</td><td>2.13</td><td class='up'>+178</td><td><b>5.2%</b></td><td class='alloc' data-w='0.051846'>₹0</td></tr><tr><td><a class="ticker-link" href="stock.html?t=THANGAMAYL">THANGAMAYL</a></td><td>₹6,398.20</td><td>2.50</td><td class='up'>+142</td><td><b>18.3%</b></td><td class='alloc' data-w='0.183343'>₹0</td></tr></tbody></table></div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const amtEl = document.getElementById('strategy-amount');
+  const resetBtn = document.getElementById('strategy-reset');
+  function fmtINR(n) {
+    if (!isFinite(n) || n < 0) n = 0;
+    return '₹' + Math.round(n).toLocaleString('en-IN');
+  }
+  function recalc() {
+    const amt = parseFloat(amtEl.value) || 0;
+    document.querySelectorAll('.strategy-tbl .alloc').forEach(td => {
+      const w = parseFloat(td.getAttribute('data-w')) || 0;
+      td.textContent = fmtINR(amt * w);
+    });
+  }
+  amtEl.addEventListener('input', recalc);
+  resetBtn.addEventListener('click', () => { amtEl.value = 525000; recalc(); });
+  recalc();
+})();
+</script>
+
 
 <section>
   <h2>Today's Top 10 — Combined JADE</h2>
   <p class="lead">Highest-ranked stocks across the full filtered equity universe.
     <a href="leaderboard.html">View full leaderboard →</a></p>
-  <table class='t'><thead><tr><th>#</th><th>Ticker</th><th>Sector</th><th>Cap</th><th>Vol</th><th>1y</th><th>3y CAGR</th><th>5y CAGR</th><th>Combined JADE</th></tr></thead><tbody><tr><td class='rank'>1</td><td><a class="ticker-link" href="stock.html?t=BBOX">BBOX</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+125.6%</td><td>+79.6%</td><td>—</td><td>3789</td></tr><tr><td class='rank'>2</td><td><a class="ticker-link" href="stock.html?t=APOLLO">APOLLO</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+125.2%</td><td>+139.9%</td><td>+117.4%</td><td>3771</td></tr><tr><td class='rank'>3</td><td><a class="ticker-link" href="stock.html?t=KERNEX">KERNEX</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+87.1%</td><td>—</td><td>—</td><td>3715</td></tr><tr><td class='rank'>4</td><td><a class="ticker-link" href="stock.html?t=AEROFLEX">AEROFLEX</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+139.0%</td><td>—</td><td>—</td><td>3689</td></tr><tr><td class='rank'>5</td><td><a class="ticker-link" href="stock.html?t=HIRECT">HIRECT</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+73.7%</td><td>+77.9%</td><td>+69.9%</td><td>3676</td></tr><tr><td class='rank'>6</td><td><a class="ticker-link" href="stock.html?t=POWERINDIA">POWERINDIA</a></td><td>Capital Goods / Engineering</td><td><span class="tag cap-mid">mid</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+81.4%</td><td>+106.6%</td><td>+79.2%</td><td>3670</td></tr><tr><td class='rank'>7</td><td><a class="ticker-link" href="stock.html?t=GVT&amp;D">GVT&amp;D</a></td><td>Other</td><td><span class="tag cap-mid">mid</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+105.9%</td><td>—</td><td>—</td><td>3668</td></tr><tr><td class='rank'>8</td><td><a class="ticker-link" href="stock.html?t=MTARTECH">MTARTECH</a></td><td>Defence & Aerospace</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+370.8%</td><td>+80.6%</td><td>+51.6%</td><td>3663</td></tr><tr><td class='rank'>9</td><td><a class="ticker-link" href="stock.html?t=CUPID">CUPID</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+701.6%</td><td>+246.8%</td><td>+111.5%</td><td>3635</td></tr><tr><td class='rank'>10</td><td><a class="ticker-link" href="stock.html?t=SHAILY">SHAILY</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+91.8%</td><td>+115.4%</td><td>—</td><td>3634</td></tr></tbody></table>
+  <table class='t'><thead><tr><th>#</th><th>Ticker</th><th>Sector</th><th>Cap</th><th>Vol</th><th>1y</th><th>3y CAGR</th><th>5y CAGR</th><th>Combined JADE</th></tr></thead><tbody><tr><td class='rank'>1</td><td><a class="ticker-link" href="stock.html?t=CUPID">CUPID</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+868.0%</td><td>+276.2%</td><td>+132.0%</td><td>3781</td></tr><tr><td class='rank'>2</td><td><a class="ticker-link" href="stock.html?t=SENORES">SENORES</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+117.5%</td><td>—</td><td>—</td><td>3659</td></tr><tr><td class='rank'>3</td><td><a class="ticker-link" href="stock.html?t=SYRMA">SYRMA</a></td><td>Consumer Durables / Electronics</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+86.3%</td><td>+51.8%</td><td>—</td><td>3648</td></tr><tr><td class='rank'>4</td><td><a class="ticker-link" href="stock.html?t=RPTECH">RPTECH</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+157.5%</td><td>—</td><td>—</td><td>3632</td></tr><tr><td class='rank'>5</td><td><a class="ticker-link" href="stock.html?t=THANGAMAYL">THANGAMAYL</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+232.6%</td><td>+86.1%</td><td>+69.6%</td><td>3632</td></tr><tr><td class='rank'>6</td><td><a class="ticker-link" href="stock.html?t=KERNEX">KERNEX</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+100.4%</td><td>—</td><td>—</td><td>3624</td></tr><tr><td class='rank'>7</td><td><a class="ticker-link" href="stock.html?t=BLISSGVS">BLISSGVS</a></td><td>Other</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+280.8%</td><td>+75.1%</td><td>+37.1%</td><td>3620</td></tr><tr><td class='rank'>8</td><td><a class="ticker-link" href="stock.html?t=ASTRAMICRO">ASTRAMICRO</a></td><td>Defence & Aerospace</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+77.3%</td><td>+69.1%</td><td>+63.1%</td><td>3619</td></tr><tr><td class='rank'>9</td><td><a class="ticker-link" href="stock.html?t=HFCL">HFCL</a></td><td>Telecom & Media</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag high">high</span></td><td>+162.1%</td><td>+46.7%</td><td>+11.9%</td><td>3610</td></tr><tr><td class='rank'>10</td><td><a class="ticker-link" href="stock.html?t=WELCORP">WELCORP</a></td><td>Metals & Mining</td><td><span class="tag cap-micro">micro</span></td><td class='dim'><span class="tag medium">medium</span></td><td>+67.1%</td><td>+73.8%</td><td>+70.3%</td><td>3585</td></tr></tbody></table>
 </section>
 
 <section>
@@ -83,7 +167,7 @@
   <p class="lead">Pre-built portfolios across risk, time-horizon, cap-tier and sector profiles.
     <a href="bundles.html">View all bundles →</a></p>
   <div class="info-grid">
-    <div class='info-tile accent'><div class='label'>Volatility</div><div class='ticker'><a href='bundles.html#high_vol_all_star'>High-Vol All-Star</a></div><div class='body'>Top 10 high-volatility names by Combined JADE. Weekly Thursday rebalance with top-15 hysteresis. Captures the high-beta cohort with strong r…</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Cap Tier</div><div class='ticker'><a href='bundles.html#mid_cap_momentum'>Mid-Cap Momentum</a></div><div class='body'>Top 10 mid-caps by Rapid JADE. Monthly rebalance with top-20 hysteresis (keep-band reduces churn). Backtest-validated over 3 years. Cadence:…</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Style</div><div class='ticker'><a href='bundles.html#elite_five_classical'>Elite Five — Classical</a></div><div class='body'>Top 5 stocks by Classical JADE, no cap or vol filter. Weekly Thursday rebalance with top-12 hysteresis. Pure rating play — picks from the en…</div><div class='sub'>5 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Cap Tier</div><div class='ticker'><a href='bundles.html#mid_cap_compounders'>Mid-Cap Compounders</a></div><div class='body'>Top 10 mid-caps by Classical JADE. Monthly rebalance with top-20 hysteresis (keep-band reduces churn). Backtest-validated over 3 years. Cade…</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Cap Tier</div><div class='ticker'><a href='bundles.html#mid_cap_all_star'>Mid-Cap All-Star</a></div><div class='body'>Top 10 mid-caps by Combined JADE. Monthly rebalance with top-20 hysteresis (keep-band reduces churn). Backtest-validated over 3 years. Caden…</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Volatility</div><div class='ticker'><a href='bundles.html#high_vol_compounders'>High-Vol Compounders</a></div><div class='body'>Top 10 high-volatility names by Classical JADE. Weekly Thursday rebalance with top-20 hysteresis. Captures the high-beta cohort with strong …</div><div class='sub'>10 stocks · equal-weighted</div></div>
+    <div class='info-tile accent'><div class='label'>Volatility</div><div class='ticker'><a href='bundles.html#high_vol_all_star'>High-Vol All-Star</a></div><div class='body'>Top 10 high-volatility names by Combined JADE. Weekly Thursday rebalance with top-15 hysteresis. Captures the high-beta cohort with strong r…</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Style</div><div class='ticker'><a href='bundles.html#elite_five_classical'>Elite Five — Classical</a></div><div class='body'>Top 5 stocks by Classical JADE, no cap or vol filter. Weekly Thursday rebalance with top-12 hysteresis. Pure rating play — picks from the en…</div><div class='sub'>5 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Volatility</div><div class='ticker'><a href='bundles.html#high_vol_compounders'>High-Vol Compounders</a></div><div class='body'>Top 10 high-volatility names by Classical JADE. Weekly Thursday rebalance with top-20 hysteresis. Captures the high-beta cohort with strong …</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Horizon Blend</div><div class='ticker'><a href='bundles.html#triple_horizon'>Triple Horizon</a></div><div class='body'>4 Compounders + 3 Momentum + 2 Breakouts — diversified across all 3 JADE horizons. Cadence: monthly. Backtest: +187.1% over 3yr (CAGR 42.1%,…</div><div class='sub'>7 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Style</div><div class='ticker'><a href='bundles.html#top_10_blitz'>Top-10 Blitz</a></div><div class='body'>Top 10 stocks by Blitz JADE, no cap or vol filter. Monthly rebalance with top-15 hysteresis. Pure rating play — picks from the entire eligib…</div><div class='sub'>10 stocks · equal-weighted</div></div><div class='info-tile accent'><div class='label'>Sector</div><div class='ticker'><a href='bundles.html#sector_diversified'>Sector-Diversified</a></div><div class='body'>Top 10 with max 2 stocks per sector. Hard cap on concentration risk. Cadence: monthly, hysteresis top-20. Backtest: +170.2% over 3yr (CAGR 3…</div><div class='sub'>10 stocks · equal-weighted</div></div>
   </div>
 </section>
 
